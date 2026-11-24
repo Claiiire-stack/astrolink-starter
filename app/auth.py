@@ -42,6 +42,9 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if user and user.check_password(password):
+            if user.employment_status != "employed":
+                flash("Invalid username or password.", "danger")
+                return render_template("login.html")
             login_user(user)
             flash(f"Logged in as {user.display_name or user.username}.", "success")
             return redirect(url_for("auth.home"))

@@ -27,7 +27,10 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return db.session.get(User, int(user_id))
+        user = db.session.get(User, int(user_id))
+        if user and user.employment_status != "employed":
+            return None
+        return user
 
     # Auth routes (login, register, logout) — provided for you
     from app.auth import auth_bp
@@ -37,6 +40,8 @@ def create_app():
     # Example:
     #   from app.your_feature import your_bp
     #   app.register_blueprint(your_bp)
+    from app.stations import stations_bp
+    app.register_blueprint(stations_bp)
 
     with app.app_context():
         db.create_all()
