@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header"><h1>Satellites</h1></div>
+<section class="panel">
+  <table>
+    <tr><th>Name</th><th>Status</th><th>Region</th><th>Altitude (km)</th><th>Customers</th></tr>
+    {% for s in satellites %}
+    <tr><td>{{ s.name }}</td><td>{{ s.status }}</td><td>{{ s.coverage_region }}</td><td>{{ s.orbit_altitude_km }}</td><td>{{ s.subscribers_served }}</td></tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}

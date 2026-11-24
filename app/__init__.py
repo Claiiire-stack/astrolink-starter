@@ -42,6 +42,8 @@ def create_app():
     #   app.register_blueprint(your_bp)
     from app.stations import stations_bp
     app.register_blueprint(stations_bp)
+    from app.commands import commands_bp
+    app.register_blueprint(commands_bp)
 
     with app.app_context():
         db.create_all()
