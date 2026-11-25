@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header"><h1>Send command to {{ satellite.name }}</h1></div>
+<section class="panel">
+  {% if confirm %}
+  <h2>Please confirm</h2>
+  <p>Satellite: <strong>{{ satellite.name }}</strong> ({{ satellite.coverage_region }}, {{ satellite.subscribers_served }} customers, status: {{ satellite.status }})</p>
+  <p>Command: <strong>{{ confirm.label }}</strong>{% if parameter %} with value <strong>{{ parameter }}</strong>{% endif %}</p>
+  <p>Risk level: <strong>{{ confirm.risk }}</strong></p>
+  <p>{{ confirm.what_it_does }}</p>
+  <form method="post">
+    <input type="hidden" name="command_type" value="{{ command_type }}">
+    <input type="hidden" name="parameter" value="{{ parameter }}">
+    <input type="hidden" name="confirmed" value="yes">
+    <button type="submit">Confirm and send</button>
+    <a href="{{ url_for('commands.send_command', satellite_id=satellite.id) }}">Cancel</a>
+  </form>
+  {% else %}
+  <p>Status: {{ satellite.status }} | Region: {{ satellite.coverage_region }} | Customers: {{ satellite.subscribers_served }}</p>
+  <form method="post">
+    <p>
+      <label>Command<br>
+        <select name="command_type">
+          {% for key, cmd in allowed.items() %}
+          <option value="{{ key }}">{{ cmd.label }} ({{ cmd.risk }} risk)</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p>
+      <label>Value (only if the command needs one)<br>
+        <input type="text" name="parameter">
+      </label>
+    </p>
+    <button type="submit">Review command</button>
+  </form>
+  <h2>What each command needs</h2>
+  <table>
+    <tr><th>Command</th><th>Value</th><th>What it does</th></tr>
+    {% for key, cmd in allowed.items() %}
+    <tr><td>{{ cmd.label }}</td><td>{{ cmd.parameter or "none" }}</td><td>{{ cmd.what_it_does }}</td></tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+</section>
+{% endblock %}

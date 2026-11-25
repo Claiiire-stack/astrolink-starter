@@ -3,9 +3,9 @@
 <div class="page-header"><h1>Satellites</h1></div>
 <section class="panel">
   <table>
-    <tr><th>Name</th><th>Status</th><th>Region</th><th>Altitude (km)</th><th>Customers</th></tr>
+    <tr><th>Name</th><th>Status</th><th>Region</th><th>Altitude (km)</th><th>Customers</th>{% if can_command %}<th></th>{% endif %}</tr>
     {% for s in satellites %}
-    <tr><td>{{ s.name }}</td><td>{{ s.status }}</td><td>{{ s.coverage_region }}</td><td>{{ s.orbit_altitude_km }}</td><td>{{ s.subscribers_served }}</td></tr>
+    <tr><td>{{ s.name }}</td><td>{{ s.status }}</td><td>{{ s.coverage_region }}</td><td>{{ s.orbit_altitude_km }}</td><td>{{ s.subscribers_served }}</td>{% if can_command %}<td><a href="{{ url_for('commands.send_command', satellite_id=s.id) }}">Send command</a></td>{% endif %}</tr>
     {% endfor %}
   </table>
 </section>
